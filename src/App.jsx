@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage, loadMessages } from "./store/chat/chatSlice";
-import { Button } from "@mui/material";
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 
 const App = () => {
   const [userName, setUserName] = useState("");
@@ -37,19 +37,56 @@ const App = () => {
 
   return (
     <>
-      <div>Welcome {userName}!!!</div>
-      <div>
-        {messages.map((message, index) => {
-          return (
-            <li key={index}>
-              {message.sender} : {message.content}
-            </li>
-          );
-        })}
-      </div>
-      <Button variant="contained" color="primary" onClick={handleSendMessage}>
-        Send
-      </Button>
+      <Paper style={{ maxWidth: "600px" }} elevation={6}>
+        <Box
+          sx={{
+            height: "80px",
+          }}
+        >
+          <Typography variant="h4" style={{ padding: "20px 16px" }}>
+            Chat ({userName})
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            borderTop: 1,
+            borderBottom: 1,
+            borderColor: "grey.500",
+            height: "500px",
+            padding: "16px",
+            overflow: "auto",
+          }}
+        >
+          {messages.map((message, index) => {
+            return (
+              <li key={index}>
+                {message.sender} : {message.content}
+              </li>
+            );
+          })}
+        </Box>
+        <div style={{ padding: "16px" }}>
+          <Grid container spacing={1}>
+            <Grid item xs={10}>
+              <TextField
+                label="Type your message"
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ padding: "12px 20px", margin: "4px" }}
+                onClick={handleSendMessage}
+              >
+                Send
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
+      </Paper>
     </>
   );
 };
