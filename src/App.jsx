@@ -14,6 +14,7 @@ const commonStyle = {
 
 const App = () => {
   const [userName, setUserName] = useState("");
+  const [newMessage, setNewMessage] = useState("");
 
   const messages = useSelector((state) => state.chat.messages);
   const dispatch = useDispatch();
@@ -39,9 +40,15 @@ const App = () => {
   };
 
   const handleSendMessage = () => {
-    const newMsg = { sender: userName, content: "test message 1" };
+    const newMsg = { sender: userName, content: newMessage };
     dispatch(addMessage(newMsg));
     localStorage.setItem("messages", JSON.stringify([...messages, newMsg]));
+    setNewMessage("");
+  };
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    handleSendMessage();
   };
 
   return (
@@ -99,25 +106,29 @@ const App = () => {
           })}
         </Box>
         <div style={{ padding: "16px" }}>
-          <Grid container spacing={1}>
-            <Grid item xs={10}>
-              <TextField
-                label="Type your message"
-                variant="outlined"
-                fullWidth
-              />
+          <form onSubmit={handleFormSubmit}>
+            <Grid container spacing={1}>
+              <Grid item xs={10}>
+                <TextField
+                  label="Type your message"
+                  variant="outlined"
+                  fullWidth
+                  value={newMessage}
+                  onChange={(event) => setNewMessage(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={2}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  style={{ padding: "12px 20px", margin: "4px" }}
+                  onClick={handleSendMessage}
+                >
+                  Send
+                </Button>
+              </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{ padding: "12px 20px", margin: "4px" }}
-                onClick={handleSendMessage}
-              >
-                Send
-              </Button>
-            </Grid>
-          </Grid>
+          </form>
         </div>
       </Paper>
     </>
