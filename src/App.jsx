@@ -46,8 +46,8 @@ const App = () => {
   }, [messages]);
 
   const onStorageUpdate = (event) => {
-    const { key, value } = event;
-    if (key === "messages") dispatch(loadMessages(JSON.parse(value)));
+    const { key, newValue } = event;
+    if (key === "messages") dispatch(loadMessages(JSON.parse(newValue)));
   };
 
   const scrollToBottom = () => {
