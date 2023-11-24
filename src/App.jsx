@@ -2,6 +2,15 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessage, loadMessages } from "./store/chat/chatSlice";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { LeftMessage, RightMessage } from "./components/Message";
+
+const commonStyle = {
+  messageListItem: {
+    listStyleType: "none",
+    display: "inline-block",
+    width: "100%",
+  },
+};
 
 const App = () => {
   const [userName, setUserName] = useState("");
@@ -58,11 +67,35 @@ const App = () => {
           }}
         >
           {messages.map((message, index) => {
-            return (
-              <li key={index}>
-                {message.sender} : {message.content}
-              </li>
-            );
+            if (message.sender !== userName) {
+              return (
+                <li
+                  key={index}
+                  style={{
+                    ...commonStyle.messageListItem,
+                  }}
+                >
+                  <LeftMessage
+                    sender={message.sender}
+                    content={message.content}
+                  ></LeftMessage>
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  key={index}
+                  style={{
+                    ...commonStyle.messageListItem,
+                  }}
+                >
+                  <RightMessage
+                    sender={"You"}
+                    content={message.content}
+                  ></RightMessage>
+                </li>
+              );
+            }
           })}
         </Box>
         <div style={{ padding: "16px" }}>
